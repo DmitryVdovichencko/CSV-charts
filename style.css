@@ -1,0 +1,13 @@
+.red line, .red path{
+	stroke:red;
+}
+.red text{
+  fill: red;
+} 
+
+.green line, .green path{
+	stroke:green;
+}
+.green text{
+  fill: green;
+} 
