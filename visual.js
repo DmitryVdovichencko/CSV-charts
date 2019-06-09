@@ -23,6 +23,15 @@ function createYAxis(yMin, yMax, translateX = 0,height,className){
       return y;
       
 }
+function createXAxis(xMin, xMax, width,className){
+  let x = d3.scaleTime()
+      .domain(d3.extent(data, function(d) { 
+        
+        return d.date; }))
+
+      .range([ 0, width ])
+      
+}
 function createTrend(dataPath, color, y){
   d3.csv(dataPath,
   // When reading the csv, I must format variables:
@@ -34,13 +43,21 @@ function createTrend(dataPath, color, y){
     // Add X axis --> it is a date format
     console.log(`Date in scale X is ${JSON.stringify(data)}`)
     var x = d3.scaleTime()
+
       .domain(d3.extent(data, function(d) { 
         console.log(`Date in scale X is ${JSON.stringify(d)}`)
         return d.date; }))
-      .range([ 0, width ]);
+      
+      .range([ 0, width ])
+      .ticks(d3.timeSecond.every(1))
+
+      console.log(x);
+      
+      // console.log(x.tickFormat(d3.timeFormat("%M:%S")));
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
+
     // Add Y axis
 
       
