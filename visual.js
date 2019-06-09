@@ -27,7 +27,7 @@ function createTrend(dataPath, color, y){
   d3.csv(dataPath,
   // When reading the csv, I must format variables:
   function(d){
-    return ({ date : d3.timeParse("%d.%m.%Y_%H:%M:%S")(d.date), value : +d.value });
+    return ({ date : d3.timeParse("%d.%m.%Y_%H:%M:%S:%L")(d.date), value : +d.value });
   },
   // Now I can use this dataset:
   function(data) {
