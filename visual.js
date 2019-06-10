@@ -41,22 +41,24 @@ function createTrend(dataPath, color, y){
   // Now I can use this dataset:
   function(data) {
     // Add X axis --> it is a date format
-    console.log(`Date in scale X is ${JSON.stringify(data)}`)
+    
     var x = d3.scaleTime()
 
+
       .domain(d3.extent(data, function(d) { 
-        console.log(`Date in scale X is ${JSON.stringify(d)}`)
+        
         return d.date; }))
       
-      .range([ 0, width ])
-      .ticks(d3.timeSecond.every(1))
-
-      console.log(x);
+      .range([ 0, width ]);
       
-      // console.log(x.tickFormat(d3.timeFormat("%M:%S")));
+
+      
+      
+     
+
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x).ticks(5,":%S .%L"));
 
     // Add Y axis
 
