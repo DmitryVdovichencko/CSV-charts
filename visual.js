@@ -32,7 +32,7 @@ function createXAxis(xMin, xMax, width,className){
       .range([ 0, width ])
       
 }
-function createTrend(dataPath, color, y){
+function createTrend(dataPath, color, y, commonX=false){
   d3.csv(dataPath,
   // When reading the csv, I must format variables:
   function(d){
@@ -55,10 +55,12 @@ function createTrend(dataPath, color, y){
       
       
      
-
-    svg.append("g")
+if(!commonX){
+      svg.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).ticks(5,":%S .%L"));
+      .call(d3.axisBottom(x).ticks(5,"%H:%M:%S .%L"));
+}
+
 
     // Add Y axis
 
@@ -87,4 +89,4 @@ function createTrend(dataPath, color, y){
 })
 }
 createTrend("data.csv", "#69b3a2",createYAxis(0.3, 0.4, 0, height,"red"));
-createTrend("data2.csv", "rgb(23,234,156)", createYAxis(0, 250, -50, height,"green"));
+createTrend("data2.csv", "rgb(23,234,156)", createYAxis(0, 250, -50, height,"green"),true);
