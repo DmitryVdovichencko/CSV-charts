@@ -1,4 +1,21 @@
+function createSVGel(id,parent) {
+  const newTrend = document.createElement('div');
+  newTrend.setAttribute("id", id);
+  parent.appendChild(newTrend);
+  var margin = {top: 10, right: 30, bottom: 30, left: 200},
+    width = 800 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+// append the svg object to the body of the page
+const svg = d3.select(`#${id}`)
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+    return svg;
 
+}
 // set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 30, left: 200},
     width = 800 - margin.left - margin.right,
@@ -12,11 +29,11 @@ var svg = d3.select("#my_dataviz")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 //Read the data
-function createYAxis(yMin, yMax, translateX = 0,height,className){
+function createYAxis(yMin, yMax, translateX = 0,height,className,svgEl){
     let y = d3.scaleLinear()
       .domain( [yMin, yMax])
       .range([ height, 0 ]);
-       svg.append("g")
+       svgEl.append("g")
        .attr("transform", `translate(${translateX},0)`)
        .attr("class", className)
       .call(d3.axisLeft(y));
@@ -32,7 +49,8 @@ function createXAxis(xMin, xMax, width,className){
       .range([ 0, width ])
       
 }
-function createTrend(dataPath, color, y, commonX=false){
+function createTrend(dataPath, color, y, commonX=false, svgEl ){
+
   d3.csv(dataPath,
   // When reading the csv, I must format variables:
   function(d){
@@ -56,7 +74,7 @@ function createTrend(dataPath, color, y, commonX=false){
       
      
 if(!commonX){
-      svg.append("g")
+      svgEl.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x).ticks(5,"%H:%M:%S .%L"));
 }
@@ -66,7 +84,7 @@ if(!commonX){
 
       
     // Add the line
-    svg.append("path")
+    svgEl.append("path")
       .datum(data)
       .attr("fill", "none")
       .attr("stroke", color)
@@ -76,7 +94,7 @@ if(!commonX){
         .y(function(d) { return y(d.value) })
         )
     // Add the points
-    svg
+    svgEl
       .append("g")
       .selectAll("dot")
       .data(data)
@@ -88,5 +106,5 @@ if(!commonX){
         .attr("fill", color)
 })
 }
-createTrend("data.csv", "#69b3a2",createYAxis(0.3, 0.4, 0, height,"red"));
-createTrend("data2.csv", "rgb(23,234,156)", createYAxis(0, 250, -50, height,"green"),true);
+createTrend("data.csv", "#69b3a2",createYAxis(0.3, 0.4, 0, height,"red"),false,svg);
+createTrend("data2.csv", "rgb(23,234,156)", createYAxis(0, 250, -50, height,"green"),false, createSVGel("new", document.querySelector("body")));
